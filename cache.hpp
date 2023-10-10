@@ -35,7 +35,11 @@ template <typename T> struct CacheList{
     void pushtop(vector<Node<T>*> &table, T data, int page_num){
 
         Node<T> *new_elem = new Node<T>(page_num, data, NULL, head);
-        if (head != NULL) head->prev = new_elem;
+        if (head != NULL){
+
+            head->prev = new_elem;
+            head->prev->next = head;
+        }
 
         head = new_elem;
         if (tail == NULL) tail = head;
@@ -54,17 +58,17 @@ template <typename T> struct CacheList{
 
     void movetop(vector<Node<T>*> &table, T data, int page_num){
 
-        if (table[page_num] = head) return;
-        
-        table[page_num]->prev->next = table[page_num]->next;
+        if (table[page_num] == head) return;
 
         if (table[page_num] == tail){
 
             tail = table[page_num]->prev;
+            table[page_num]->prev->next = NULL;
             pushtop(table, data, page_num);
             return;
         }
 
+        table[page_num]->prev->next = table[page_num]->next;
         table[page_num]->next->prev = table[page_num]->prev;
 
         pushtop(table, data, page_num);
@@ -84,7 +88,7 @@ template <typename T> struct CacheList{
     void clear(){
 
         Node<T> *node = head->next;
-        while(node->next != NULL || node != NULL)
+        while(node->next != NULL && node != NULL)
             delete node->prev;
         delete node;         
     }

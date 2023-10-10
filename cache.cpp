@@ -15,10 +15,10 @@ int main(){
 
         cin >> elem;
         if (elem < 0) break;
-
         if (CacheTable[elem] == NULL) cache.pushtop(CacheTable, 0, elem);
+        
         else{ 
-         
+
             cache.movetop(CacheTable, 0, elem);
             heat++;
         }
