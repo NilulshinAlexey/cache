@@ -2,26 +2,28 @@
 
 int main(){
 
-    int num_page = 0, size = 0, elem, heat = 0;
-    CacheList<int> cache(5);
+    int num_page = 1024, size = 0, elem, heat = 0;
+    int isex;
 
-    cout << "Enter page number: ";
-    cin >> num_page;
     cout << "Enter cache size: ";
     cin >> size;
 
-    vector<Node<int> *> CacheTable(size);
+    CacheList<int> cache(size);
+
+    vector<Node<int> *> CacheTable(num_page);
     while(1){
 
         cin >> elem;
         if (elem < 0) break;
+
         if (CacheTable[elem] == NULL) cache.pushtop(CacheTable, 0, elem);
-        
+    
         else{ 
 
             cache.movetop(CacheTable, 0, elem);
             heat++;
         }
+        
         cache.desplayList();    
     }
 

@@ -49,9 +49,8 @@ template <typename T> struct CacheList{
         
         if (num_elem > size){
 
-            table[tail->page_num] = NULL;
             tail = tail->prev;
-            delete tail->next;
+            tail->next = NULL;
             num_elem--;
         }
     } 
@@ -60,16 +59,19 @@ template <typename T> struct CacheList{
 
         if (table[page_num] == head) return;
 
+        num_elem--;
+
         if (table[page_num] == tail){
-
+            
             tail = table[page_num]->prev;
-            table[page_num]->prev->next = NULL;
-            pushtop(table, data, page_num);
-            return;
+            tail->next = table[page_num]->next;
         }
-
-        table[page_num]->prev->next = table[page_num]->next;
-        table[page_num]->next->prev = table[page_num]->prev;
+        
+        else{
+        
+            table[page_num]->prev->next = table[page_num]->next;
+            table[page_num]->next->prev = table[page_num]->prev;
+        }
 
         pushtop(table, data, page_num);
     }
@@ -77,12 +79,12 @@ template <typename T> struct CacheList{
     void desplayList(){
 
         Node<T> *node = head;
-        while(node != NULL){
+        while(node->next != NULL){
 
             cout << node->page_num << " = ";
             node = node->next;
         }
-        cout << "end" << endl;
+        cout << node->page_num << endl;
     }
 
     void clear(){
